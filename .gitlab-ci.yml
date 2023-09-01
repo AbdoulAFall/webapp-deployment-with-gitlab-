@@ -20,6 +20,9 @@ variables:
   APP_NAME: "webapp"
   APP_CONTAINER_PORT: "80"
   APP_EXPOSED_PORT: "5000"
+  HEROKU_APP_STG: "demowebapp-staging"
+  HEROKU_APP_PROD: "demowebapp-prod"
+  HEROKU_DOMAIN: "heroku.com"
 
 
 image: docker:latest
@@ -55,7 +58,7 @@ test-acceptance-job:   # This job runs in the test stage.
     - docker run -d -p ${APP_EXPOSED_PORT}:${APP_CONTAINER_PORT} --env PORT=${APP_CONTAINER_PORT} --name webapp ${APP_NAME}
     - sleep 5 
     - apk --no-cache add curl 
-    - curl "http:docker:${APP_EXPOSED_PORT}" | grep -q "Dimension"
+    - curl "http://docker:${APP_CONTAINER_PORT}" | grep -q "Dimension"
 
 release-image-job:   # This job runs in the test stage.
   stage: Release image    # 
@@ -67,10 +70,21 @@ release-image-job:   # This job runs in the test stage.
     - docker push "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
     - docker push "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
 
-.unit-test-job:   # This job runs in the test stage.
+deploy-review-job:   # This job runs in the test stage.
   stage: Deploy review    # 
+  environment:
+    name: staging
+    url: htttps://${HEROKU_APP_STG}.${HEROKU_DOMAIN}
+  only: 
+    - main 
   script:
-    -
+    - apk --no-cache add npm 
+    - npm install -g heroku 
+    - heroku container:login 
+    - heroku create demowebapp-staging || echo "project already exist"
+    - heroku container:push -a demowebapp-staging web 
+    - heroku container:release -a demowebapp-staging web 
+
 
 .stop-review-job:   # This job runs in ordre to delete the review  when we click in the stop button 
   stage: Stop review    #
