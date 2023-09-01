@@ -76,7 +76,7 @@ deploy-review-job:   # This job runs in the test stage.
     name: staging
     url: htttps://${HEROKU_APP_STG}.${HEROKU_DOMAIN}
   only: 
-    - main 
+    - master 
   script:
     - apk --no-cache add npm 
     - npm install -g heroku 
