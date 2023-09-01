@@ -62,7 +62,7 @@ test-acceptance-job:   # This job runs in the test stage.
     - sleep 5 
 
 release-image-job:   # This job runs in the test stage.
-  stage: Release image    # 
+  stage: Release image  
   script:
     - docker load < ${APP_NAME}.tar
     - docker tag ${APP_NAME} "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
