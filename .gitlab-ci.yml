@@ -75,7 +75,7 @@ deploy-review-job:   # This job runs in the test stage.
   stage: Deploy review    # 
   environment:
     name: staging
-    url: htttps://${HEROKU_APP_STG}.${HEROKU_DOMAIN} 
+    url: htttps://${HEROKU_APP_STG}.${HEROKU_DOMAIN}
   script:
     - apk --no-cache add npm 
     - npm install -g heroku 
@@ -92,8 +92,7 @@ deploy-review-job:   # This job runs in the test stage.
 
 .unit-test-job:   # This job runs in the test stage.
   stage: Deploy staging    # 
-  script:
-    -
+  script:    
 
 .unit-test-job:   # This job runs in the test stage.
   stage: Test staging     # 
