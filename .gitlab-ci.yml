@@ -58,11 +58,10 @@ test-acceptance-job:   # This job runs in the test stage.
     - docker run -d -p ${APP_EXPOSED_PORT}:${APP_CONTAINER_PORT} --env PORT=${APP_CONTAINER_PORT} --name webapp ${APP_NAME}
     - sleep 5 
     - apk --no-cache add curl 
-    - curl "http://docker:${APP_EXPOSED_PORT}" | grep -i "Dimension"
-    - sleep 5 
+    - sudo curl "http://docker:${APP_EXPOSED_PORT}" | grep -i "Dimension" 
 
 release-image-job:   # This job runs in the test stage.
-  stage: Release image  l
+  stage: Release image
   script:
     - docker load < ${APP_NAME}.tar
     - docker tag ${APP_NAME} "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
@@ -72,7 +71,7 @@ release-image-job:   # This job runs in the test stage.
     - docker push "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
 
 deploy-review-job:   # This job runs in the test stage.
-  stage: Deploy review    # 
+  stage: Deploy review
   environment:
     name: staging
     url: htttps://${HEROKU_APP_STG}.${HEROKU_DOMAIN}
@@ -89,10 +88,6 @@ deploy-review-job:   # This job runs in the test stage.
   stage: Stop review    #
   script:
     -
-
-.unit-test-job:   # This job runs in the test stage.
-  stage: Deploy staging    # 
-  script:    
 
 .unit-test-job:   # This job runs in the test stage.
   stage: Test staging     # 
