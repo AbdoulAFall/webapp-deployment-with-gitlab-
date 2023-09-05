@@ -64,8 +64,9 @@ release-image-job:   # This job runs in the test stage.
   stage: Release image
   script:
     - docker load < ${APP_NAME}.tar
-    - docker tag "${APP_NAME}:latest" "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
-    - docker tag "${APP_NAME}:latest" "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+    - echo "APP_NAME '${APP_NAME}' IMAGE_NAME '${IMAGE_NAME}' CI_COMMIT_REF_NAME '${CI_COMMIT_REF_NAME}' CI_COMMIT_SHORT_SHA '${CI_COMMIT_SHORT_SHA}'"
+    - docker tag ${APP_NAME} "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
+    - docker tag ${APP_NAME} "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - docker push "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
     - docker push "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
