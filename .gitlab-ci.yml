@@ -57,7 +57,7 @@ test-acceptance-job:   # This job runs in the test stage.
     - docker load < ${APP_NAME}.tar
     - docker run -d -p ${APP_EXPOSED_PORT}:${APP_CONTAINER_PORT} --env PORT=${APP_CONTAINER_PORT} --name webapp ${APP_NAME}
     - sleep 5 
-    - apk --no-cache add curl 
+    - apk --no-cache add curl --upgrade bash 
     - sudo curl "http://docker:${APP_EXPOSED_PORT}" | grep -i "Dimension" 
 
 release-image-job:   # This job runs in the test stage.
