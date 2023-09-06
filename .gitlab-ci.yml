@@ -77,7 +77,7 @@ deploy-review-job:
   environment: staging
   script:
     - echo "Deploying to AWS EC2..."
-    - scp -i /home/terraform/TP6/dev/devops-abdoul.pem -o StrictHostKeyChecking=no $IMAGE_NAME vagrantr@172.31.33.69:/tmp
+    - scp -i /home/terraform/TP6/dev/devops-abdoul.pem -o StrictHostKeyChecking=no $IMAGE_NAME vagrant@172.31.33.69:/tmp
     
     
 .deploy-review-job:   
