@@ -72,7 +72,7 @@ release-image-job:   # This job runs in the test stage.
     - docker push "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
     - docker push "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
 
-deploy-review-jow-aws:
+deploy-review-job:
   stage: deploy review
   environment: staging
   script:
@@ -82,7 +82,7 @@ deploy-review-jow-aws:
 
     - aws s3 cp $IMAGE_NAME s3://terraform-backend-abdoul/$APP_NAME/ 
     
-.deploy-review-job:   # 
+.deploy-review-job:   
   stage: Deploy review
   environment:
     name: staging
