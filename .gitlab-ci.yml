@@ -73,7 +73,7 @@ release-image-job:   # This job runs in the test stage.
     - docker push "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
 
 deploy-review-job:
-  stage: deploy review
+  stage: Deploy review
   environment: staging
   script:
     - aws configure set aws_access_key_id AWS_ACCESS_KEY_ID
