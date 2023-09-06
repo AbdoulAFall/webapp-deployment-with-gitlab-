@@ -72,7 +72,17 @@ release-image-job:   # This job runs in the test stage.
     - docker push "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
     - docker push "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
 
-deploy-review-job:   # 
+deploy-review-jow-aws:
+  stage: deploy review
+  environment: staging
+  script:
+    - aws configure set aws_access_key_id AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key AWS_SECRET_ACCESS_KEY
+    - aws configure set default.region AWS_DEFAULT_REGION
+
+    - aws s3 cp $IMAGE_NAME s3://terraform-backend-abdoul/$APP_NAME/ 
+    
+.deploy-review-job:   # 
   stage: Deploy review
   environment:
     name: staging
@@ -84,7 +94,6 @@ deploy-review-job:   #
     - heroku create demowebapp-staging || echo "project already exist"
     - heroku container:push -a demowebapp-staging web 
     - heroku container:release -a demowebapp-staging web 
-
 
 .stop-review-job:   # This job runs in ordre to delete the review  when we click in the stop button 
   stage: Stop review    #
