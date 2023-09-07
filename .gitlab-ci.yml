@@ -71,16 +71,8 @@ release-image-job:   # This job runs in the test stage.
     - echo "docker push content '${IMAGE_NAME}:${CI_COMMIT_REF_NAME}'"
     - docker push "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
     - docker push "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
-
-deploy-review-job:
-  stage: Deploy review
-  environment: staging
-  script:
-    - echo "Deploying to AWS EC2..."
-    - scp -i /home/terraform/TP6/dev/devops-abdoul.pem -o StrictHostKeyChecking=no $IMAGE_NAME vagrant@172.31.33.69:/tmp
     
-    
-.deploy-review-job:   
+deploy-review-job:   
   stage: Deploy review
   environment:
     name: staging
