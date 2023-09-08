@@ -1,5 +1,7 @@
 # static-website-cicd-gitlab
 
+![Uploading image.png…]()
+
 
 
 ## Getting started
