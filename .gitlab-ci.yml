@@ -113,6 +113,12 @@ stop review:
     - npm install -g heroku
     - heroku container:login
     - heroku apps:destroy -a demowebapp-$CI_COMMIT_REF_NAME -c demowebapp-$CI_COMMIT_REF_NAME
+    
+.test_template: &test
+  image: alpine
+  script:
+    - apk --no-cache add curl
+    - curl "https://$DOMAIN" | grep -i "Dimension"  
 
 test staging:
   <<: *test
