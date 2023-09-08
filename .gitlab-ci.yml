@@ -24,7 +24,7 @@ stages:          # List of stages for jobs, and their order of execution
   - Deploy prod
   - Test prod
 
-build-job:       # This job runs in the build stage, which runs first.
+build-job:       
   stage: build 
   script:
     - docker build -t ${APP_NAME} .
@@ -33,8 +33,8 @@ build-job:       # This job runs in the build stage, which runs first.
     paths: 
       - ${APP_NAME}.tar
 
-test-acceptance-job:   # This job runs in the test stage.
-  stage: Test acceptation    # 
+test-acceptance-job:   
+  stage: Test acceptation  
   script:
     - docker load < ${APP_NAME}.tar
     - docker run -d -p ${APP_EXPOSED_PORT}:${APP_CONTAINER_PORT} --env PORT=${APP_CONTAINER_PORT} --name webapp ${APP_NAME}
@@ -42,7 +42,7 @@ test-acceptance-job:   # This job runs in the test stage.
     - apk --no-cache add curl
     - curl -L "http://docker:${APP_EXPOSED_PORT}" | grep -i "Dimension" 
 
-release-image-job:   # This job runs in the test stage.
+release-image-job: 
   stage: Release image
   script:
     - docker load < ${APP_NAME}.tar
@@ -54,7 +54,7 @@ release-image-job:   # This job runs in the test stage.
     - docker push "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
     - docker push "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
 
-deploy staging:   # 
+deploy staging: 
   stage: Deploy staging
   environment:
     name: staging
@@ -118,13 +118,13 @@ stop review:
   image: alpine
   script:
     - apk --no-cache add curl
-    - curl "https://$DOMAIN" | grep -i "Dimension"  
+    - curl -L "https://$DOMAIN" | grep -i "Dimension"  
 
 test staging:
   <<: *test
   stage: Test staging
   variables:
-    DOMAIN: ${HEROKU_APP_STG}.${HEROKU_DOMAIN}
+    DOMAIN: ${HEROKU_APP_STG}-db13e13738ea.${HEROKU_DOMAIN}
 
 
 test prod:
@@ -133,4 +133,4 @@ test prod:
   only:
     - master  
   variables:
-    DOMAIN: ${HEROKU_APP_PROD}.${HEROKU_DOMAIN}
+    DOMAIN: ${HEROKU_APP_PROD}-64bfd6572f75.${HEROKU_DOMAIN}
